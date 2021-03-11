@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - study_topics
+name: Topics
+vid: topics
+description: 'Defines study topics for Drupal Certifications'
+weight: 0

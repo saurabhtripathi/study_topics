@@ -1,0 +1,17 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - study_topics
+  theme:
+    - bartik
+id: topicname
+theme: bartik
+weight: 0
+provider: null
+plugin: topic_name
+settings:
+  id: topic_name
+  provider: study_topics
+  label_display: hidden
+visibility: {  }

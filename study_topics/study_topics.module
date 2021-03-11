@@ -1,0 +1,55 @@
+<?php
+
+use Drupal\block\Entity\Block;
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function study_topics_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.study_topics':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('The Study Topic module creates a taxonomy vocabulary Topics. ');
+      $output .= '<h3>' . t('Uses') . '</h3>';
+      $output .= '<dl>';
+      $output .= '<dt>' . t('To create block instances of Topics vocabulary') . '</dt>';
+      $output .= '</dl>';
+      return $output;
+  }
+}
+
+/**
+ * Implements hook_entity_presave().
+ */
+
+function study_topics_entity_presave(Drupal\Core\Entity\EntityInterface $entity)
+{
+  if ($entity->bundle() == 'topics') {
+    $block = Block::load($entity->name->value);
+    $id = preg_replace('/\s+/','',$entity->name->value);
+    if (empty($block)) {
+      $values = [
+        // Adding a unique id for block.
+        'id' => $id,
+        // Plugin block id as defined in placeholder block.
+        'plugin' => 'topic_name',
+        // Placing block in content region.
+        'region' => 'content',
+        'settings' => [
+          'label' => $entity->name->value,
+        ],
+        // Theme name in which block will be placed.
+        'theme' => 'bartik',
+        'visibility' => [],
+        'weight' => 100,
+      ];
+      // Creating a new block instance.
+      $block = Block::create($values);
+      $block->save();
+      // Invalidating cache for all topic related blocks.
+      Drupal\Core\Cache\Cache::invalidateTags(['topic_blocks_cache']);
+    }
+  }
+}
