@@ -3,8 +3,6 @@
 use Drupal\block\Entity\Block;
 use Drupal\Core\Routing\RouteMatchInterface;
 
-
-
 /**
  * Implements hook_help().
  */
