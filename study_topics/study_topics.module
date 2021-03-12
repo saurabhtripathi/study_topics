@@ -25,7 +25,6 @@ function study_topics_help($route_name, RouteMatchInterface $route_match) {
 /**
  * Implements hook_entity_presave().
  */
-
 function study_topics_entity_presave(Drupal\Core\Entity\EntityInterface $entity) {
   $route_name = \Drupal::routeMatch()->getRouteName();
   // Route and bundle check.
