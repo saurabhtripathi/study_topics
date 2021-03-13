@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * @file
+ * Study topics module, for creating topics vocab and blocks.
+ */
+
+use Drupal\Core\Cache\Cache;
+use Drupal\Component\Utility\Random;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\block\Entity\Block;
 use Drupal\Core\Routing\RouteMatchInterface;
 
@@ -11,7 +19,7 @@ function study_topics_help($route_name, RouteMatchInterface $route_match) {
     case 'help.page.study_topics':
       $output = '';
       $output .= '<h3>' . t('About') . '</h3>';
-      $output .= '<p>' . t('The Study Topic module creates a taxonomy vocabulary Topics. ');
+      $output .= '<p>' . t('The Study Topic module creates a taxonomy vocabulary Topics.');
       $output .= '<h3>' . t('Uses') . '</h3>';
       $output .= '<dl>';
       $output .= '<dt>' . t('To create block instances of Topics vocabulary') . '</dt>';
@@ -23,32 +31,32 @@ function study_topics_help($route_name, RouteMatchInterface $route_match) {
 /**
  * Implements hook_entity_presave().
  */
-function study_topics_entity_presave(Drupal\Core\Entity\EntityInterface $entity) {
+function study_topics_entity_presave(EntityInterface $entity) {
   $route_name = \Drupal::routeMatch()->getRouteName();
   // Route and bundle check.
   if ($entity->bundle() == 'topics' && $route_name != 'entity.taxonomy_term.edit_form') {
     // Generate a random id use lowercase to handle block validation.
-    $random = new \Drupal\Component\Utility\Random();
+    $random = new Random();
     $id = $random->name();
-      $values = [
+    $values = [
         // Adding a unique id for block.
-        'id' => 'topic_' . strtolower($id),
+      'id' => 'topic_' . strtolower($id),
         // Plugin block id as defined in placeholder block.
-        'plugin' => 'topic_name',
+      'plugin' => 'topic_name',
         // Placing block in content region.
-        'region' => 'content',
-        'settings' => [
-          'label' => $entity->name->value,
-        ],
+      'region' => 'content',
+      'settings' => [
+        'label' => $entity->name->value,
+      ],
         // Theme name in which block will be placed.
-        'theme' => 'bartik',
-        'visibility' => [],
-        'weight' => 100,
-      ];
-      // Creating a new block instance.
-      $block = Block::create($values);
-      $block->save();
-      // Invalidating cache for all topic related blocks.
-      Drupal\Core\Cache\Cache::invalidateTags(['topic_blocks_cache']);
-    }
+      'theme' => 'bartik',
+      'visibility' => [],
+      'weight' => 100,
+    ];
+    // Creating a new block instance.
+    $block = Block::create($values);
+    $block->save();
+    // Invalidating cache for all topic related blocks.
+    Cache::invalidateTags(['topic_blocks_cache']);
+  }
 }
