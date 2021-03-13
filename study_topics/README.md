@@ -1,5 +1,3 @@
-[[_TOC_]]
-
 #### Introduction
 
 study topics module manages blocks of a topic vocabulary
@@ -22,13 +20,16 @@ study topics module manages blocks of a topic vocabulary
 2. drush pmu study_topics for uninstalling.
 
 #### Testing
-- No automated test cases written for now.
 - Manual testing steps are as follows:
   - After enabling module check if module is enabled and has help link in extend list.
   - Check if taxonomy vocabulary Topics is created.
   - Create a new term of type Topics and check if corresponding block gets created.
   - Check if block is accessible only to Authenticated users
   - Check you do not need to clear cache after creating term, to see the corresponding block placed in content region.
+
+#### Not in scope
+- No automated test cases written for now.
+- Since block and taxonomy are different entities have not handled automatic deletion of block.
 
 #### Version Compatibility
  Drupal core
